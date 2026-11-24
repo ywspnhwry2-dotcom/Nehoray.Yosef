@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>הכנה למבחן תנופה - כיתה ט' | מחברת תרגול</title>
+    <style>
+        /* =====================================================================
+           100% SELF-CONTAINED VANILLA CSS (NO EXTERNAL CDN DEPENDENCIES)
+           ===================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-desk: #e5ebf3;
+            --paper-bg: #fffef9;
+            --paper-line: #e2e8f0;
+            --margin-pink: #fda4af;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --amber: #fbbf24;
+            --amber-dark: #f59e0b;
+            --amber-text: #451a03;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --success-border: #86efac;
+            --danger: #dc2626;
+            --danger-bg: #fee2e2;
+            --danger-border: #fca5a5;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-desk);
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            padding-bottom: 48px;
+        }
+
+        /* Math & Fractions */
+        .math-ltr {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 4px;
+            font-size: 0.9em;
+            line-height: 1.15;
+        }
+        .frac > span:first-child {
+            border-bottom: 2px solid currentColor;
+            padding: 0 5px 2px;
+        }
+        .frac > span:last-child {
+            padding: 2px 5px 0;
+        }
+
+        /* Sticky Header */
+        .top-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+            padding: 10px 12px;
+        }
+
+        .header-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .btn-guide {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(180deg, #fcd34d 0%, #fbbf24 100%);
+            color: var(--amber-text);
+            border: 1.5px solid #d97706;
+            border-radius: 12px;
+            padding: 9px 14px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(217, 119, 6, 0.18);
+            transition: transform 0.12s ease, background 0.15s ease;
+        }
+        .btn-guide:active {
+            transform: scale(0.97);
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill-progress {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            color: #1e1b4b;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .pill-diff {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .pill-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: #14532d;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 900;
+        }
+
+        .topic-selector-wrap {
+            width: 100%;
+        }
+
+        .topic-select {
+            width: 100%;
+            background-color: #f1f5f9;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+        .topic-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+
+        /* Main Container & Notebook Sheet */
+        .main-wrapper {
+            width: 100%;
+            max-width: 820px;
+            margin: 14px auto 0;
+            padding: 0 10px;
+        }
+
+        .notebook-sheet {
+            width: 100%;
+            background-color: var(--paper-bg);
+            background-image:
+                linear-gradient(90deg, transparent 22px, var(--margin-pink) 22px, var(--margin-pink) 24px, transparent 24px),
+                linear-gradient(var(--paper-line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 2.15rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+            padding: 20px 34px 24px 16px;
+            position: relative;
+        }
+
+        /* Spiral Holes on Right Edge */
+        .spiral-holes {
+            position: absolute;
+            top: 20px;
+            right: 5px;
+            bottom: 20px;
+            width: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        .spiral-hole {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background-color: var(--bg-desk);
+            box-shadow: inset 0 1.5px 2.5px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Question Section */
+        .question-section {
+            padding-bottom: 18px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .topic-badge {
+            display: inline-block;
+            background-color: #dbeafe;
+            color: #1e3a8a;
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .sub-level-badge {
+            display: inline-block;
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .question-prompt {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.65;
+            word-wrap: break-word;
+        }
+
+        .eq-box-center {
+            text-align: center;
+            margin: 14px 0 6px;
+        }
+
+        .eq-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 12px 20px;
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.05);
+            font-size: 1.35rem;
+            font-weight: 800;
+            max-width: 100%;
+        }
+
+        .brace-char {
+            font-size: 2.6rem;
+            font-weight: 300;
+            color: #64748b;
+            margin-right: 10px;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .system-lines {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .visual-container {
+            margin-top: 14px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .visual-container svg {
+            width: 100%;
+            max-width: 330px;
+            height: auto;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .data-table {
+            width: 100%;
+            max-width: 380px;
+            margin: 12px auto;
+            border-collapse: collapse;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+        }
+        .data-table tr:first-child {
+            background-color: #eff6ff;
+        }
+
+        /* Scratchpad Section */
+        .scratchpad-section {
+            margin-top: 18px;
+            width: 100%;
+        }
+
+        .scratchpad-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .scratchpad-title {
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pad-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-pad-mode {
+            border: 1px solid #cbd5e1;
+            background: #e2e8f0;
+            color: #334155;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 6px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-pad-mode.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-pad-clear {
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            color: var(--danger);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .scratchpad-textarea {
+            display: block;
+            width: 100%;
+            min-height: 145px;
+            background-color: #fcfdfe;
+            background-image: linear-gradient(#dbeafe 1px, transparent 1px);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 1rem;
+            color: var(--text-main);
+            direction: ltr;
+            text-align: left;
+            resize: vertical;
+        }
+        .scratchpad-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+
+        .symbol-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            direction: ltr;
+        }
+
+        .btn-sym {
+            min-width: 36px;
+            height: 36px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #1e293b;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-sym:active {
+            background: #cbd5e1;
+        }
+
+        /* Freehand Drawing Canvas */
+        .draw-box {
+            width: 100%;
+            position: relative;
+            border: 2px solid #93c5fd;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        #handwriting-canvas {
+            display: block;
+            width: 100%;
+            height: 210px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        .brush-toolbar {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 5px 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 1px #94a3b8;
+            cursor: pointer;
+        }
+
+        .btn-eraser {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #334155;
+            cursor: pointer;
+        }
+
+        /* Final Answer Area */
+        .answer-section {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .answer-card {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 16px 14px;
+        }
+
+        .answer-card-title {
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 14px;
+        }
+
+        .inputs-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 10px 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        }
+
+        .input-box-stack {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-minus-under {
+            width: 96px;
+            height: 32px;
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: ui-monospace, monospace;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #1e293b;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: background 0.12s ease, transform 0.1s ease;
+        }
+        .btn-minus-under:active {
+            background: #cbd5e1;
+            transform: scale(0.96);
+        }
+
+        .input-label {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #1e293b;
+        }
+
+        .final-input {
+            width: 96px;
+            padding: 8px 6px;
+            font-family: ui-monospace, monospace;
+            font-size: 1.35rem;
+            font-weight: 900;
+            text-align: center;
+            direction: ltr;
+            unicode-bidi: plaintext;
+            color: var(--text-main);
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-bottom: 3.5px solid var(--primary);
+            border-radius: 10px;
+            transition: all 0.18s ease;
+        }
+        .final-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .final-input.correct {
+            border-color: var(--success);
+            border-bottom-color: #15803d;
+            background: var(--success-bg);
+            color: #14532d;
+        }
+        .final-input.wrong {
+            border-color: var(--danger);
+            border-bottom-color: #b91c1c;
+            background: var(--danger-bg);
+            color: #7f1d1d;
+            animation: shake 0.35s ease-in-out;
+        }
+
+        /* Action Buttons */
+        .actions-row {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 26px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+            transition: transform 0.12s ease, background 0.15s ease;
+        }
+        .btn-check:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 11px 15px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .btn-secondary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-sol {
+            background: #e0e7ff;
+            color: #1e1b4b;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 11px 15px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .feedback-banner {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.98rem;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+        .feedback-banner.success {
+            background: var(--success-bg);
+            border: 2px solid var(--success);
+            color: #14532d;
+        }
+        .feedback-banner.warning {
+            background: #fef3c7;
+            border: 1.5px solid #f59e0b;
+            color: #78350f;
+        }
+        .feedback-banner.error {
+            background: var(--danger-bg);
+            border: 1.5px solid var(--danger);
+            color: #7f1d1d;
+        }
+
+        .next-wrap {
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        .btn-next {
+            background: var(--success);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 28px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+        }
+
+        .worked-solution {
+            margin-top: 16px;
+            background: #ffffff;
+            border: 2px solid #c7d2fe;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: right;
+        }
+        .worked-solution h4 {
+            color: #1e1b4b;
+            font-size: 1rem;
+            font-weight: 900;
+            border-bottom: 1px solid #e0e7ff;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .worked-solution-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Modal Overlay ("הסבר איך לפתור (דוגמה)") */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(15, 23, 42, 0.68);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            max-width: 640px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background-color: var(--paper-bg);
+            background-image:
+                linear-gradient(90deg, transparent 22px, var(--margin-pink) 22px, var(--margin-pink) 24px, transparent 24px),
+                linear-gradient(var(--paper-line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 2.15rem;
+            border: 2px solid #94a3b8;
+            border-radius: 18px;
+            padding: 18px 34px 22px 16px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .btn-close-modal {
+            position: sticky;
+            top: 0;
+            float: left;
+            background: #1e293b;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-tag {
+            display: inline-block;
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #78350f;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 6px;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .guide-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.96rem;
+        }
+
+        .guide-box {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .hl-yellow {
+            background: linear-gradient(104deg, rgba(254,240,138,0) 1%, rgba(254,240,138,1) 3%, rgba(254,240,138,0.9) 94%, rgba(254,240,138,0) 99%);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .hl-green-circle {
+            display: inline-block;
+            border: 2.5px solid var(--success);
+            border-radius: 999px;
+            padding: 2px 14px;
+            background: rgba(220, 252, 231, 0.5);
+            color: #14532d;
+            font-weight: 900;
+        }
+
+        .step-arrow {
+            display: inline-block;
+            color: var(--danger);
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 1px 7px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 80;
+        }
+
+        /* Desktop Enhancements */
+        @media (min-width: 641px) {
+            .top-header {
+                padding: 12px 20px;
+            }
+            .topic-selector-wrap {
+                width: auto;
+                flex: 1;
+                max-width: 310px;
+            }
+            .main-wrapper {
+                margin-top: 24px;
+                padding: 0 20px;
+            }
+            .notebook-sheet {
+                background-image:
+                    linear-gradient(90deg, transparent 36px, var(--margin-pink) 36px, var(--margin-pink) 38px, transparent 38px),
+                    linear-gradient(var(--paper-line) 1px, transparent 1px);
+                padding: 28px 52px 32px 28px;
+            }
+            .spiral-holes {
+                right: 10px;
+                width: 14px;
+            }
+            .spiral-hole {
+                width: 13px;
+                height: 13px;
+            }
+            .question-prompt {
+                font-size: 1.22rem;
+            }
+            .eq-card {
+                font-size: 1.6rem;
+                padding: 14px 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- STICKY TOP BAR -->
+    <header class="top-header">
+        <div class="header-inner">
+            <!-- Top-Right Guide Button -->
+            <button type="button" class="btn-guide" onclick="openGuideModal()">
+                <span>📖</span>
+                <span>הסבר איך לפתור (דוגמה)</span>
+            </button>
+
+            <!-- Progress & Score -->
+            <div class="header-stats">
+                <div class="pill-progress">
+                    <span id="q-progress-text">שאלה 1 / 24</span>
+                    <span>|</span>
+                    <span id="q-diff-badge" class="pill-diff">רמה 1</span>
+                </div>
+                <div class="pill-score">
+                    <span>🏆</span>
+                    <span id="score-text">0</span>
+                </div>
+            </div>
+
+            <!-- Topic Selector Dropdown -->
+            <div class="topic-selector-wrap">
+                <select id="topic-select" class="topic-select" onchange="jumpToQuestion(Number(this.value))" aria-label="בחירת נושא ושאלה"></select>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN NOTEBOOK WORKSPACE -->
+    <main class="main-wrapper">
+        <div class="notebook-sheet">
+
+            <!-- Spiral Binder Holes -->
+            <div class="spiral-holes" aria-hidden="true">
+                <div class="spiral-hole"></div><div class="spiral-hole"></div><div class="spiral-hole"></div>
+                <div class="spiral-hole"></div><div class="spiral-hole"></div><div class="spiral-hole"></div>
+                <div class="spiral-hole"></div><div class="spiral-hole"></div><div class="spiral-hole"></div>
+                <div class="spiral-hole"></div><div class="spiral-hole"></div><div class="spiral-hole"></div>
+            </div>
+
+            <!-- 1. QUESTION SECTION -->
+            <section class="question-section">
+                <div class="question-meta">
+                    <span id="topic-pill" class="topic-badge">נושא 1: משוואות ממעלה ראשונה</span>
+                    <span id="sub-level-pill" class="sub-level-badge">תרגיל 1 מתוך 2</span>
+                </div>
+
+                <div id="question-body" class="question-prompt"></div>
+                <div id="question-visual" class="visual-container"></div>
+            </section>
+
+            <!-- 2. SCRATCHPAD SECTION -->
+            <section class="scratchpad-section">
+                <div class="scratchpad-header">
+                    <div class="scratchpad-title">
+                        <span>✏️</span>
+                        <span>דף טיוטה לחישובים (חופשי — לא נבדק):</span>
+                    </div>
+
+                    <div class="pad-controls">
+                        <button type="button" id="btn-mode-type" class="btn-pad-mode active" onclick="switchPadMode('type')">⌨️ הקלדה</button>
+                        <button type="button" id="btn-mode-draw" class="btn-pad-mode" onclick="switchPadMode('draw')">✍️ ציור בכתב יד</button>
+                        <button type="button" class="btn-pad-clear" onclick="clearScratchpad()">נקה דף</button>
+                    </div>
+                </div>
+
+                <!-- Typing Mode -->
+                <div id="pad-type-box">
+                    <textarea id="scratchpad-textarea" class="scratchpad-textarea" rows="5"
+                        placeholder="כתוב כאן את החישובים שלך שלב אחר שלב..."></textarea>
+
+                    <div class="symbol-bar">
+                        <button type="button" class="btn-sym" onclick="insertSymbol('x')">x</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol('y')">y</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol('²')">²</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol('√')">√</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(' + ')">+</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(' - ')">-</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(' · ')">·</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(' / ')">/</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(' = ')">=</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol('(')">(</button>
+                        <button type="button" class="btn-sym" onclick="insertSymbol(')')">)</button>
+                    </div>
+                </div>
+
+                <!-- Drawing Mode -->
+                <div id="pad-draw-box" class="hidden">
+                    <div class="draw-box">
+                        <canvas id="handwriting-canvas"></canvas>
+                        <div class="brush-toolbar">
+                            <button type="button" class="color-dot" style="background:#0f172a" onclick="setBrush('#0f172a', 2.5)" title="שחור"></button>
+                            <button type="button" class="color-dot" style="background:#2563eb" onclick="setBrush('#2563eb', 2.5)" title="כחול"></button>
+                            <button type="button" class="color-dot" style="background:#dc2626" onclick="setBrush('#dc2626', 2.5)" title="אדום"></button>
+                            <button type="button" class="btn-eraser" onclick="setBrush('#ffffff', 18)">מחק</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. FINAL ANSWER SECTION -->
+            <section class="answer-section">
+                <div class="answer-card">
+                    <div class="answer-card-title">תשובה סופית:</div>
+
+                    <div id="final-inputs-container" class="inputs-row"></div>
+
+                    <div class="actions-row">
+                        <button type="button" id="prev-btn" class="btn-secondary" onclick="prevQuestion()">→ הקודמת</button>
+                        <button type="button" id="check-answer-btn" class="btn-check" onclick="checkCurrentAnswer()">✓ בדיקת תשובה</button>
+                        <button type="button" id="reveal-sol-btn" class="btn-sol" onclick="toggleFullSolution()">הצג פתרון מלא</button>
+                    </div>
+
+                    <div id="feedback-banner" class="feedback-banner hidden"></div>
+
+                    <div id="next-question-wrap" class="next-wrap hidden">
+                        <button type="button" class="btn-next" onclick="nextQuestion()">
+                            <span id="next-btn-label">לשאלה הבאה ←</span>
+                        </button>
+                    </div>
+
+                    <div id="worked-solution-box" class="worked-solution hidden">
+                        <h4>💡 דרך הפתרון המלאה לשאלה זו:</h4>
+                        <div id="worked-solution-body" class="worked-solution-body"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MODAL: "הסבר איך לפתור (דוגמה)" -->
+    <div id="guide-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeGuideModal()">
+        <div class="modal-sheet">
+            <button type="button" class="btn-close-modal" onclick="closeGuideModal()" title="סגור">✕</button>
+            <div style="text-align:center;">
+                <span class="modal-tag">דף עזר ודוגמה פתורה לנושא הנוכחי</span>
+                <h2 id="guide-modal-title" class="modal-title">איך פותרים?</h2>
+            </div>
+
+            <div id="guide-modal-content" class="guide-body"></div>
+
+            <div style="margin-top:18px; text-align:center;">
+                <button type="button" class="btn-check" onclick="closeGuideModal()">הבנתי, חזרה לשאלה!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // WORKED EXAMPLES GUIDE FOR ALL 12 TOPICS
+        // =====================================================================
+        const TOPICS_GUIDE = {
+            1: {
+                title: "פתרון משוואות ממעלה ראשונה שלב אחר שלב",
+                html: `
+                    <div class="guide-box" style="text-align:center;">
+                        <div style="font-size:0.85rem; color:#475569; font-weight:700; margin-bottom:4px;">דוגמה (כמו במבחן):</div>
+                        <span class="math-ltr" style="font-size:1.25rem;">3(2x - 4) + 10 = 4x + 6</span>
+                    </div>
+                    <div>
+                        <strong>1. פותחים סוגריים בעזרת חוק הפילוג:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px;">
+                            <span class="math-ltr" style="font-size:1.1rem;"><span class="hl-yellow">6x - 12</span> + 10 = 4x + 6</span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>2. מכנסים איברים דומים בכל אגף:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px;">
+                            <span class="math-ltr" style="font-size:1.1rem;">6x - 2 = 4x + 6</span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>3. מעבירים אגפים ומחלקים במקדם של x:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                            <div><span class="math-ltr">6x - 4x = 6 + 2</span> <span class="step-arrow">↪ העברת אגפים</span></div>
+                            <div><span class="math-ltr">2x = 8</span> <span class="step-arrow">↪ :2</span></div>
+                            <div><span class="hl-green-circle math-ltr">x = 4</span></div>
+                        </div>
+                    </div>
+                    <div class="guide-box" style="background:#fefce8; border-color:#fde047; font-size:0.9rem;">
+                        💡 <strong>טיפ לשברים (מכנים):</strong> אם יש מכנה כמו <span class="math-ltr">/ 6</span>, כופלים את <strong>כל</strong> האיברים במשוואה במכנה המשותף כדי להיפטר מהשבר!
+                    </div>
+                `
+            },
+            2: {
+                title: "פתרון מערכת משוואות בשיטת ההצבה",
+                html: `
+                    <div class="guide-box" style="display:flex; justify-content:center;" dir="ltr">
+                        <div style="display:inline-flex; align-items:center;">
+                            <span class="brace-char">{</span>
+                            <div class="system-lines math-ltr" style="font-size:1.1rem;">
+                                <div>y = <span class="hl-yellow">2x + 11</span></div>
+                                <div>x + <span style="color:#2563eb;">y</span> = -1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>שלב 1: מציבים את <span class="math-ltr">y</span> מהמשוואה הראשונה בתוך השנייה:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px;">
+                            <span class="math-ltr" style="font-size:1.1rem;">x + (<span class="hl-yellow">2x + 11</span>) = -1</span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>שלב 2: מכנסים איברים ומגלים את <span class="math-ltr">x</span>:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                            <div><span class="math-ltr">3x + 11 = -1</span> <span class="step-arrow">↪ -11</span></div>
+                            <div><span class="math-ltr">3x = -12</span> <span class="step-arrow">↪ :3</span></div>
+                            <div><span class="hl-green-circle math-ltr">x = -4</span></div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>שלב 3: מציבים <span class="math-ltr">x = -4</span> במשוואה הראשונה למציאת <span class="math-ltr">y</span>:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                            <div class="math-ltr">y = 2 · (-4) + 11 = -8 + 11</div>
+                            <div><span class="hl-green-circle math-ltr">y = 3</span></div>
+                        </div>
+                    </div>
+                `
+            },
+            3: {
+                title: "חוק הפילוג המורחב וכפל מקוצר",
+                html: `
+                    <div class="guide-box" style="text-align:center;">
+                        <div style="font-size:0.85rem; color:#475569; font-weight:700;">נוסחת הפרש ריבועים:</div>
+                        <span class="math-ltr" style="font-size:1.25rem; color:#1d4ed8;">(a + b)(a - b) = a² - b²</span>
+                    </div>
+                    <div>
+                        <strong>דוגמה א' (פתיחת סוגריים):</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px;">
+                            <span class="math-ltr">(x + 5)(x - 5) = x² - 5² = <span class="hl-green-circle">x² - 25</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>דוגמה ב' (פתרון משוואה עם כפל מקוצר):</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                            <div><span class="math-ltr">(x + 1)(x - 1) = 80</span></div>
+                            <div><span class="math-ltr">x² - 1 = 80</span> <span class="step-arrow">↪ +1</span></div>
+                            <div><span class="math-ltr">x² = 81</span> <span class="step-arrow">↪ √</span></div>
+                            <div><span class="hl-green-circle math-ltr">x = 9</span> (וגם -9)</div>
+                        </div>
+                    </div>
+                `
+            },
+            4: {
+                title: "פונקציה קווית: שיפוע וחיתוך עם הצירים",
+                html: `
+                    <div class="guide-box" style="text-align:center;">
+                        <div class="math-ltr" style="font-size:1.2rem;">y = mx + b</div>
+                        <div style="font-size:0.88rem; color:#1e40af; font-weight:700; margin-top:4px;">
+                            <span class="math-ltr">m</span> = שיפוע הישר &nbsp;|&nbsp; <span class="math-ltr">b</span> = חיתוך עם ציר <span class="math-ltr">y</span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>1. חישוב שיפוע (<span class="math-ltr">m</span>) לפי שתי נקודות:</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px;">
+                            <span class="math-ltr" style="font-size:1.1rem;">m = <span class="frac"><span>y₂ - y₁</span><span>x₂ - x₁</span></span></span>
+                            <div style="font-size:0.88rem; margin-top:6px;">עבור <span class="math-ltr">(1, 4)</span> ו-<span class="math-ltr">(3, 10)</span>: <span class="math-ltr hl-yellow">m = (10 - 4) / (3 - 1) = 3</span></div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>2. חיתוך עם הצירים:</strong>
+                        <div class="guide-box" style="margin-top:4px; font-size:0.92rem;">
+                            • חיתוך עם ציר <span class="math-ltr">y</span>: מציבים <span class="math-ltr hl-yellow">x = 0</span>.<br>
+                            • חיתוך עם ציר <span class="math-ltr">x</span>: מציבים <span class="math-ltr hl-yellow">y = 0</span> ופותרים משוואה!
+                        </div>
+                    </div>
+                `
+            },
+            5: {
+                title: "זוויות וישרים מקבילים",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:8px; font-size:0.94rem;">
+                        <div>1. <span class="hl-yellow"><strong>זוויות צמודות</strong></span> על קו ישר: סכומן תמיד <span class="math-ltr">180°</span>.</div>
+                        <div>2. <span class="hl-yellow"><strong>זוויות קודקודיות</strong></span> (מול זו): שוות זו לזו!</div>
+                        <div>3. בין <strong style="color:#1d4ed8;">ישרים מקבילים (<span class="math-ltr">a ∥ b</span>)</strong>:
+                            <div style="padding-right:14px; margin-top:4px;">
+                                • <strong>זוויות מתאימות</strong> — שוות.<br>
+                                • <strong>זוויות מתחלפות</strong> (צורת Z) — שוות.<br>
+                                • <strong>זוויות חד-צדדיות</strong> — סכומן <span class="math-ltr">180°</span>.
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            6: {
+                title: "משולשים: שווה-שוקיים, תיכון וחפיפה",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:8px; font-size:0.94rem;">
+                        <div>• <span class="hl-yellow"><strong>סכום הזוויות במשולש</strong></span> הוא תמיד <span class="math-ltr">180°</span>.</div>
+                        <div>• <span class="hl-yellow"><strong>משולש שווה-שוקיים:</strong></span> זוויות הבסיס שוות זו לזו!</div>
+                        <div>• <span class="hl-yellow"><strong>תיכון במשולש:</strong></span> קטע היוצא מקודקוד אל <strong>אמצע</strong> הצלע שמולו ומחלק אותה ל-2 חלקים שווים (<span class="math-ltr">:2</span>).</div>
+                        <div>• <span class="hl-yellow"><strong>חפיפת משולשים (<span class="math-ltr">△ABC ≅ △DEF</span>):</strong></span> הצלעות והזוויות המתאימות (לפי סדר האותיות) שוות זו לזו.</div>
+                    </div>
+                `
+            },
+            7: {
+                title: "משפט פיתגורס (במשולש ישר-זווית)",
+                html: `
+                    <div class="guide-box" style="text-align:center;">
+                        <div style="font-size:0.85rem; color:#475569; font-weight:700;">הנוסחה במשולש ישר-זווית (90°):</div>
+                        <span class="math-ltr" style="font-size:1.35rem; color:#1d4ed8;">a² + b² = c²</span>
+                        <div style="font-size:0.85rem; color:#475569; margin-top:4px;"><span class="math-ltr">a, b</span> = ניצבים &nbsp;|&nbsp; <span class="math-ltr">c</span> = היתר (מול ה-90°)</div>
+                    </div>
+                    <div>
+                        <strong>דוגמה: ניצבים באורך <span class="math-ltr">6</span> ו-<span class="math-ltr">8</span>. מה אורך היתר?</strong>
+                        <div class="guide-box" style="text-align:center; margin-top:4px; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                            <div class="math-ltr">6² + 8² = c² ⟹ 36 + 64 = c²</div>
+                            <div><span class="math-ltr">c² = 100</span> <span class="step-arrow">↪ √100</span></div>
+                            <div><span class="hl-green-circle math-ltr">c = 10</span></div>
+                        </div>
+                    </div>
+                `
+            },
+            8: {
+                title: "שטחים והיקפים (מלבן ודלתון)",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:10px; font-size:0.94rem;">
+                        <div>• <span class="hl-yellow"><strong>מלבן:</strong></span> שטח = <span class="math-ltr">אורך × רוחב</span> &nbsp;|&nbsp; היקף = סכום 4 הצלעות.</div>
+                        <div>• <span class="hl-yellow"><strong>דלתון:</strong></span> האלכסונים מאונכים זה לזה.
+                            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:8px; text-align:center; margin-top:6px;">
+                                <span class="math-ltr" style="color:#1e3a8a;">שטח דלתון = (אלכסון 1 × אלכסון 2) : 2</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            9: {
+                title: "חישובי אחוזים",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:10px; font-size:0.94rem;">
+                        <div><strong>1. מציאת אחוז מתוך שלם:</strong>
+                            <div style="background:#f1f5f9; padding:6px; border-radius:8px; text-align:center; margin-top:4px;">
+                                <span class="math-ltr">(החלק : השלם) × 100 = אחוז (%)</span>
+                            </div>
+                        </div>
+                        <div><strong>2. מציאת כמות לפי אחוז:</strong>
+                            <div style="background:#f1f5f9; padding:6px; border-radius:8px; text-align:center; margin-top:4px;">
+                                <span class="math-ltr">השלם × (האחוז : 100) = הכמות</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            10: {
+                title: "שאלות מילוליות: השוואת מחירים ותנועה",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:10px; font-size:0.94rem;">
+                        <div><strong>1. השוואת מחירים:</strong> כותבים ביטוי לכל חברה (<span class="math-ltr">קבוע + מחיר לשעה · x</span>) ומשווים ביניהם!</div>
+                        <div><strong>2. בעיות תנועה:</strong>
+                            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:6px; text-align:center; margin-top:4px;">
+                                <span class="math-ltr">זמן (בשעות) = דרך : מהירות</span>
+                            </div>
+                            <div style="color:#b91c1c; font-weight:800; margin-top:4px;">⚠️ כדי להפוך שעות לדקות — כופלים ב-<span class="math-ltr">60</span>!</div>
+                        </div>
+                    </div>
+                `
+            },
+            11: {
+                title: "קריאת גרפים מתארים מציאות",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:8px; font-size:0.94rem;">
+                        <div>• <span class="hl-yellow"><strong>קו אופקי (מאוזן)</strong></span> בגרף מרחק-זמן = הזמן עובר והמרחק לא משתנה = <strong>עצירה / מנוחה!</strong></div>
+                        <div>• <span class="hl-yellow"><strong>קצב עלייה / מהירות:</strong></span> מחלקים את השינוי בציר <span class="math-ltr">y</span> (הגובה/מרחק) בזמן שעבר בציר <span class="math-ltr">x</span>.</div>
+                    </div>
+                `
+            },
+            12: {
+                title: "סטטיסטיקה: שכיחות וממוצע משוקלל",
+                html: `
+                    <div class="guide-box" style="display:flex; flex-direction:column; gap:8px; font-size:0.94rem;">
+                        <div><strong>1. סך הכל משתתפים:</strong> מחברים את כל השכיחויות (שורת המספרים).</div>
+                        <div><strong>2. ממוצע מטבלת שכיחויות:</strong>
+                            <div style="background:#f1f5f9; padding:8px; border-radius:8px; text-align:center; margin-top:4px;">
+                                <span class="math-ltr">ממוצע = סכום (ערך × שכיחות) : סה"כ משתתפים</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // =====================================================================
+        // 24 EXAM QUESTIONS (12 TOPICS x 2 QUESTIONS EACH)
+        // =====================================================================
+        const QUESTIONS = [
+            // TOPIC 1
+            {
+                id: 1, topicId: 1, topicName: "1. משוואות ממעלה ראשונה", levelLabel: "תרגיל 1 מתוך 2 (בסיסי)",
+                prompt: `פתרו את המשוואה הבאה ומצאו את ערכו של <span class="math-ltr">x</span>:
+                         <div class="eq-box-center"><div class="eq-card math-ltr">110 + 7x = -16</div></div>`,
+                inputs: [{ key: "x", label: "x =", answer: -18, placeholder: "?" }],
+                solution: `
+                    <div><strong>שלב 1:</strong> נעביר את <span class="math-ltr">110</span> לאגף ימין: <span class="math-ltr">7x = -16 - 110</span></div>
+                    <div><strong>שלב 2:</strong> נכנס איברים: <span class="math-ltr">7x = -126</span></div>
+                    <div><strong>שלב 3:</strong> נחלק ב-<span class="math-ltr">7</span>: <span class="math-ltr" style="color:#15803d;">x = -126 : 7 = -18</span></div>
+                `
+            },
+            {
+                id: 2, topicId: 1, topicName: "1. משוואות ממעלה ראשונה", levelLabel: "תרגיל 2 מתוך 2 (סוגריים ומכנים)",
+                prompt: `פתרו את המשוואה עם השבר והסוגריים:
+                         <div class="eq-box-center">
+                            <div class="eq-card math-ltr">
+                                <span class="frac"><span>5x + 1</span><span>6</span></span> - 2 = <span class="frac"><span>2x</span><span>3</span></span>
+                            </div>
+                         </div>`,
+                inputs: [{ key: "x", label: "x =", answer: 11, placeholder: "?" }],
+                solution: `
+                    <div><strong>שלב 1:</strong> נכפול את כל המשוואה במכנה המשותף <span class="math-ltr">6</span>: <span class="math-ltr">(5x + 1) - 12 = 4x</span></div>
+                    <div><strong>שלב 2:</strong> נכנס איברים: <span class="math-ltr">5x - 11 = 4x</span></div>
+                    <div><strong>שלב 3:</strong> נעביר אגפים: <span class="math-ltr" style="color:#15803d;">5x - 4x = 11 ⟹ x = 11</span></div>
+                `
+            },
+
+            // TOPIC 2
+            {
+                id: 3, topicId: 2, topicName: "2. מערכת משוואות (שיטת ההצבה)", levelLabel: "תרגיל 1 מתוך 2 (כמו שאלה 13)",
+                prompt: `פתרו את מערכת המשוואות:
+                         <div class="eq-box-center">
+                            <div class="eq-card" dir="ltr">
+                                <span class="brace-char">{</span>
+                                <div class="system-lines math-ltr">
+                                    <div>y = 2x + 11</div>
+                                    <div>x + y = -1</div>
+                                </div>
+                            </div>
+                         </div>`,
+                inputs: [
+                    { key: "x", label: "x =", answer: -4, placeholder: "?" },
+                    { key: "y", label: "y =", answer: 3, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>שלב 1:</strong> נציב <span class="math-ltr">2x + 11</span> במקום <span class="math-ltr">y</span>: <span class="math-ltr">x + (2x + 11) = -1</span></div>
+                    <div><strong>שלב 2:</strong> <span class="math-ltr">3x + 11 = -1 ⟹ 3x = -12 ⟹ x = -4</span></div>
+                    <div><strong>שלב 3:</strong> <span class="math-ltr" style="color:#15803d;">y = 2·(-4) + 11 = -8 + 11 = 3</span></div>
+                `
+            },
+            {
+                id: 4, topicId: 2, topicName: "2. מערכת משוואות (שיטת ההצבה)", levelLabel: "תרגיל 2 מתוך 2 (מתקדם)",
+                prompt: `פתרו את מערכת המשוואות:
+                         <div class="eq-box-center">
+                            <div class="eq-card" dir="ltr">
+                                <span class="brace-char">{</span>
+                                <div class="system-lines math-ltr">
+                                    <div>y = 3x - 7</div>
+                                    <div>2x + y = 8</div>
+                                </div>
+                            </div>
+                         </div>`,
+                inputs: [
+                    { key: "x", label: "x =", answer: 3, placeholder: "?" },
+                    { key: "y", label: "y =", answer: 2, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>שלב 1:</strong> נציב במשוואה השנייה: <span class="math-ltr">2x + (3x - 7) = 8</span></div>
+                    <div><strong>שלב 2:</strong> <span class="math-ltr">5x - 7 = 8 ⟹ 5x = 15 ⟹ x = 3</span></div>
+                    <div><strong>שלב 3:</strong> <span class="math-ltr" style="color:#15803d;">y = 3·(3) - 7 = 9 - 7 = 2</span></div>
+                `
+            },
+
+            // TOPIC 3
+            {
+                id: 5, topicId: 3, topicName: "3. חוק הפילוג וכפל מקוצר", levelLabel: "תרגיל 1 מתוך 2 (חישוב בעזרת נוסחה)",
+                prompt: `ידוע כי <span class="math-ltr hl-yellow">(x + 1)(x - 1) = x² - 1</span>.<br>
+                         היעזרו בנוסחה זו כדי לחשב את המכפלה <span class="math-ltr">21 · 19</span> (הציבו <span class="math-ltr">x = 20</span>):`,
+                inputs: [{ key: "ans", label: "תוצאה =", answer: 399, placeholder: "?" }],
+                solution: `
+                    <div>נציב <span class="math-ltr">x = 20</span> בביטוי:</div>
+                    <div class="math-ltr" style="color:#15803d;">(20 + 1)(20 - 1) = 20² - 1 = 400 - 1 = 399</div>
+                `
+            },
+            {
+                id: 6, topicId: 3, topicName: "3. חוק הפילוג וכפל מקוצר", levelLabel: "תרגיל 2 מתוך 2 (משוואה)",
+                prompt: `פתרו את המשוואה הבאה (מצאו את הפתרון <strong>החיובי</strong>):
+                         <div class="eq-box-center"><div class="eq-card math-ltr">(x + 1)(x - 1) = 143</div></div>`,
+                inputs: [{ key: "x", label: "x (חיובי) =", answer: 12, placeholder: "?" }],
+                solution: `
+                    <div><strong>שלב 1:</strong> נפתח סוגריים: <span class="math-ltr">x² - 1 = 143</span></div>
+                    <div><strong>שלב 2:</strong> נעביר אגף: <span class="math-ltr">x² = 144</span></div>
+                    <div><strong>שלב 3:</strong> נוציא שורש: <span class="math-ltr" style="color:#15803d;">x = √144 = 12</span></div>
+                `
+            },
+
+            // TOPIC 4
+            {
+                id: 7, topicId: 4, topicName: "4. פונקציה קווית: שיפוע וצירים", levelLabel: "תרגיל 1 מתוך 2 (חישוב שיפוע)",
+                prompt: `בשרטוט מוצג ישר העובר דרך הנקודות <span class="math-ltr">A(1, 2)</span> ו-<span class="math-ltr">B(4, 8)</span>.<br>
+                         חשבו את <strong>השיפוע (<span class="math-ltr">m</span>)</strong> של הישר:`,
+                visual: `
+                    <svg viewBox="0 0 260 190">
+                        <g stroke="#e2e8f0" stroke-width="1">
+                            <line x1="40" y1="20" x2="40" y2="170"/><line x1="80" y1="20" x2="80" y2="170"/><line x1="120" y1="20" x2="120" y2="170"/><line x1="160" y1="20" x2="160" y2="170"/><line x1="200" y1="20" x2="200" y2="170"/>
+                            <line x1="20" y1="30" x2="240" y2="30"/><line x1="20" y1="60" x2="240" y2="60"/><line x1="20" y1="90" x2="240" y2="90"/><line x1="20" y1="120" x2="240" y2="120"/><line x1="20" y1="150" x2="240" y2="150"/>
+                        </g>
+                        <line x1="20" y1="150" x2="240" y2="150" stroke="#334155" stroke-width="2"/>
+                        <line x1="40" y1="170" x2="40" y2="18" stroke="#334155" stroke-width="2"/>
+                        <text x="232" y="142" font-size="12" font-weight="bold">x</text>
+                        <text x="26" y="25" font-size="12" font-weight="bold">y</text>
+                        <line x1="30" y1="165" x2="215" y2="18" stroke="#2563eb" stroke-width="3"/>
+                        <circle cx="80" cy="120" r="5" fill="#dc2626"/>
+                        <text x="88" y="128" font-size="12" font-weight="bold">A(1, 2)</text>
+                        <circle cx="200" cy="30" r="5" fill="#dc2626"/>
+                        <text x="142" y="27" font-size="12" font-weight="bold">B(4, 8)</text>
+                    </svg>`,
+                inputs: [{ key: "m", label: "m =", answer: 2, placeholder: "?" }],
+                solution: `
+                    <div>לפי נוסחת השיפוע: <span class="math-ltr" style="color:#15803d;">m = (8 - 2) / (4 - 1) = 6 / 3 = 2</span></div>
+                `
+            },
+            {
+                id: 8, topicId: 4, topicName: "4. פונקציה קווית: שיפוע וצירים", levelLabel: "תרגיל 2 מתוך 2 (חיתוך עם ציר x)",
+                prompt: `נתונה הפונקציה הקווית: <span class="math-ltr">y = -3x + 12</span>.<br>
+                         מהו שיעור ה-<span class="math-ltr">x</span> של נקודת החיתוך של הישר עם <strong>ציר ה-<span class="math-ltr">x</span></strong>?`,
+                inputs: [{ key: "x", label: "x =", answer: 4, placeholder: "?" }],
+                solution: `
+                    <div>בחיתוך עם ציר ה-<span class="math-ltr">x</span> מציבים <span class="math-ltr">y = 0</span>:</div>
+                    <div class="math-ltr" style="color:#15803d;">0 = -3x + 12 ⟹ 3x = 12 ⟹ x = 4</div>
+                `
+            },
+
+            // TOPIC 5
+            {
+                id: 9, topicId: 5, topicName: "5. זוויות וישרים מקבילים", levelLabel: "תרגיל 1 מתוך 2 (ישרים מקבילים)",
+                prompt: `נתון כי הישרים <span class="math-ltr">a</span> ו-<span class="math-ltr">b</span> מקבילים (<span class="math-ltr">a ∥ b</span>), והזווית המסומנת היא <span class="math-ltr">64°</span>.<br>
+                         מהו גודלה של זווית <span class="math-ltr" style="color:#1d4ed8;">α</span> (במעלות)?`,
+                visual: `
+                    <svg viewBox="0 0 280 170">
+                        <line x1="25" y1="50" x2="255" y2="50" stroke="#1e293b" stroke-width="2.5"/>
+                        <text x="242" y="42" font-size="13" font-weight="bold">a</text>
+                        <line x1="25" y1="125" x2="255" y2="125" stroke="#1e293b" stroke-width="2.5"/>
+                        <text x="242" y="117" font-size="13" font-weight="bold">b</text>
+                        <line x1="75" y1="158" x2="185" y2="15" stroke="#dc2626" stroke-width="2.5"/>
+                        <text x="174" y="43" font-size="12" font-weight="bold" fill="#15803d">64°</text>
+                        <text x="72" y="143" font-size="14" font-weight="bold" fill="#2563eb">α</text>
+                    </svg>`,
+                inputs: [{ key: "alpha", label: "α =", answer: 64, placeholder: "?" }],
+                solution: `
+                    <div>הזווית <span class="math-ltr">α</span> והזווית <span class="math-ltr">64°</span> הן זוויות מתחלפות חיצוניות בין ישרים מקבילים, ולכן <span class="math-ltr" style="color:#15803d;">α = 64°</span>.</div>
+                `
+            },
+            {
+                id: 10, topicId: 5, topicName: "5. זוויות וישרים מקבילים", levelLabel: "תרגיל 2 מתוך 2 (שווה-שוקיים ומקביל)",
+                prompt: `במשולש שווה-שוקיים <span class="math-ltr">ABC</span> (<span class="math-ltr">AB = AC</span>), זווית הראש <span class="math-ltr">∢A = 50°</span>.<br>
+                         דרך קודקוד <span class="math-ltr">A</span> העבירו ישר המקביל לבסיס <span class="math-ltr">BC</span>. מהו גודל הזווית <span class="math-ltr" style="color:#1d4ed8;">β</span>?`,
+                visual: `
+                    <svg viewBox="0 0 280 175">
+                        <line x1="30" y1="32" x2="250" y2="32" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3"/>
+                        <polygon points="140,32 70,145 210,145" fill="#eff6ff" stroke="#1e293b" stroke-width="2.5"/>
+                        <text x="136" y="22" font-size="13" font-weight="bold">A</text>
+                        <text x="55" y="152" font-size="13" font-weight="bold">B</text>
+                        <text x="215" y="152" font-size="13" font-weight="bold">C</text>
+                        <text x="131" y="64" font-size="12" font-weight="bold" fill="#dc2626">50°</text>
+                        <text x="172" y="48" font-size="14" font-weight="bold" fill="#2563eb">β</text>
+                    </svg>`,
+                inputs: [{ key: "beta", label: "β =", answer: 65, placeholder: "?" }],
+                solution: `
+                    <div><strong>שלב 1:</strong> זוויות הבסיס במשולש שווה-שוקיים שוות: <span class="math-ltr">∢C = (180° - 50°) : 2 = 65°</span>.</div>
+                    <div><strong>שלב 2:</strong> <span class="math-ltr">β</span> ו-<span class="math-ltr">∢C</span> מתחלפות בין מקבילים, ולכן <span class="math-ltr" style="color:#15803d;">β = 65°</span>.</div>
+                `
+            },
+
+            // TOPIC 6
+            {
+                id: 11, topicId: 6, topicName: "6. משולשים: תיכון וחפיפה", levelLabel: "תרגיל 1 מתוך 2 (תיכון במשולש)",
+                prompt: `במשולש <span class="math-ltr">ABC</span>, הקטע <span class="math-ltr">AD</span> הוא <strong>תיכון</strong> לצלע <span class="math-ltr">BC</span>.<br>
+                         נתון כי <span class="math-ltr">BD = 7.5 ס"מ</span>. מהו אורכה של הצלע <span class="math-ltr" style="color:#1d4ed8;">BC</span> כולה (בס"מ)?`,
+                visual: `
+                    <svg viewBox="0 0 260 155">
+                        <polygon points="110,22 40,130 220,130" fill="#f8fafc" stroke="#1e293b" stroke-width="2.5"/>
+                        <line x1="110" y1="22" x2="130" y2="130" stroke="#2563eb" stroke-width="2.5"/>
+                        <text x="106" y="16" font-size="13" font-weight="bold">A</text>
+                        <text x="26" y="136" font-size="13" font-weight="bold">B</text>
+                        <text x="225" y="136" font-size="13" font-weight="bold">C</text>
+                        <text x="125" y="146" font-size="13" font-weight="bold" fill="#2563eb">D</text>
+                        <text x="72" y="123" font-size="12" font-weight="bold" fill="#dc2626">7.5</text>
+                    </svg>`,
+                inputs: [{ key: "bc", label: "BC =", answer: 15, placeholder: "?" }],
+                solution: `
+                    <div>תיכון חוצה את הצלע לשני חלקים שווים (<span class="math-ltr">BD = DC</span>), ולכן <span class="math-ltr" style="color:#15803d;">BC = 7.5 × 2 = 15 ס"מ</span>.</div>
+                `
+            },
+            {
+                id: 12, topicId: 6, topicName: "6. משולשים: תיכון וחפיפה", levelLabel: "תרגיל 2 מתוך 2 (חפיפת משולשים)",
+                prompt: `נתון כי המשולשים חופפים: <span class="math-ltr hl-yellow">△ABC ≅ △DEF</span>.<br>
+                         ידוע כי <span class="math-ltr">∢A = 42°</span> ו-<span class="math-ltr">∢E = 78°</span>. חשבו את גודלה של זווית <span class="math-ltr" style="color:#1d4ed8;">∢F</span> (במעלות):`,
+                inputs: [{ key: "angleF", label: "∢F =", answer: 60, placeholder: "?" }],
+                solution: `
+                    <div>מתוך החפיפה <span class="math-ltr">∢D = ∢A = 42°</span>. סכום הזוויות במשולש הוא <span class="math-ltr">180°</span>, ולכן:</div>
+                    <div class="math-ltr" style="color:#15803d;">∢F = 180° - (42° + 78°) = 60°</div>
+                `
+            },
+
+            // TOPIC 7
+            {
+                id: 13, topicId: 7, topicName: "7. משפט פיתגורס", levelLabel: "תרגיל 1 מתוך 2 (מציאת יתר)",
+                prompt: `במשולש ישר-זווית אורכי הניצבים הם <span class="math-ltr">9 ס"מ</span> ו-<span class="math-ltr">12 ס"מ</span>.<br>
+                         חשבו את אורכו של <strong>היתר (<span class="math-ltr">c</span>)</strong> בס"מ:`,
+                visual: `
+                    <svg viewBox="0 0 240 155">
+                        <polygon points="55,25 55,130 205,130" fill="#f0fdf4" stroke="#1e293b" stroke-width="2.5"/>
+                        <polyline points="55,115 70,115 70,130" fill="none" stroke="#1e293b" stroke-width="2"/>
+                        <text x="32" y="82" font-size="13" font-weight="bold">9</text>
+                        <text x="122" y="146" font-size="13" font-weight="bold">12</text>
+                        <text x="138" y="72" font-size="14" font-weight="bold" fill="#2563eb">c = ?</text>
+                    </svg>`,
+                inputs: [{ key: "c", label: "c =", answer: 15, placeholder: "?" }],
+                solution: `
+                    <div>לפי משפט פיתגורס: <span class="math-ltr">9² + 12² = 81 + 144 = 225</span>, ולכן <span class="math-ltr" style="color:#15803d;">c = √225 = 15 ס"מ</span>.</div>
+                `
+            },
+            {
+                id: 14, topicId: 7, topicName: "7. משפט פיתגורס", levelLabel: "תרגיל 2 מתוך 2 (אלכסון מגרש וריצה)",
+                prompt: `מגרש ספורט מלבני הוא באורך <span class="math-ltr">80 מ'</span> וברוחב <span class="math-ltr">60 מ'</span>.<br>
+                         דני רץ לאורך <strong>האלכסון</strong> של המגרש מספר פעמים. מהו אורך האלכסון, וכמה פעמים עליו לרוץ אותו כדי לעבור בדיוק <span class="math-ltr">1,000 מ'</span>?`,
+                inputs: [
+                    { key: "diag", label: "אורך אלכסון (מ') =", answer: 100, placeholder: "?" },
+                    { key: "runs", label: "מספר פעמים =", answer: 10, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>אורך האלכסון:</strong> <span class="math-ltr">60² + 80² = 3600 + 6400 = 10,000 ⟹ √10,000 = 100 מ'</span>.</div>
+                    <div><strong>מספר פעמים:</strong> <span class="math-ltr" style="color:#15803d;">1,000 : 100 = 10 פעמים</span>.</div>
+                `
+            },
+
+            // TOPIC 8
+            {
+                id: 15, topicId: 8, topicName: "8. שטחים והיקפים (מלבן ודלתון)", levelLabel: "תרגיל 1 מתוך 2 (מלבן מורכב)",
+                prompt: `מלבן גדול מורכב מ-3 מלבנים קטנים זהים. רוחב כל מלבן קטן הוא <span class="math-ltr">x = 4 ס"מ</span> ואורכו <span class="math-ltr">2x</span>.<br>
+                         חשבו את <strong>השטח</strong> של המלבן הגדול כולו (בסמ"ר):`,
+                visual: `
+                    <svg viewBox="0 0 260 145">
+                        <rect x="45" y="25" width="55" height="95" fill="#dbeafe" stroke="#1e293b" stroke-width="2"/>
+                        <rect x="100" y="25" width="110" height="47.5" fill="#eff6ff" stroke="#1e293b" stroke-width="2"/>
+                        <rect x="100" y="72.5" width="110" height="47.5" fill="#dbeafe" stroke="#1e293b" stroke-width="2"/>
+                        <text x="68" y="20" font-size="12" font-weight="bold">x</text>
+                        <text x="150" y="20" font-size="12" font-weight="bold">2x</text>
+                        <text x="216" y="53" font-size="12" font-weight="bold">x</text>
+                        <text x="216" y="100" font-size="12" font-weight="bold">x</text>
+                    </svg>`,
+                inputs: [{ key: "area", label: "שטח (סמ\"ר) =", answer: 96, placeholder: "?" }],
+                solution: `
+                    <div>מידות כל מלבן קטן הן <span class="math-ltr">4 × 8 = 32 סמ"ר</span>. שטח 3 מלבנים זהים הוא <span class="math-ltr" style="color:#15803d;">3 × 32 = 96 סמ"ר</span>.</div>
+                `
+            },
+            {
+                id: 16, topicId: 8, topicName: "8. שטחים והיקפים (מלבן ודלתון)", levelLabel: "תרגיל 2 מתוך 2 (דלתון במערכת צירים)",
+                prompt: `במערכת הצירים משורטט דלתון <span class="math-ltr">ABCD</span> שקודקודיו: <span class="math-ltr">A(0, 6)</span>, <span class="math-ltr">C(0, -4)</span>, <span class="math-ltr">B(-3, 0)</span>, <span class="math-ltr">D(3, 0)</span>.<br>
+                         חשבו את <strong>שטח הדלתון</strong>:`,
+                visual: `
+                    <svg viewBox="0 0 240 190">
+                        <line x1="120" y1="12" x2="120" y2="178" stroke="#64748b" stroke-width="1.5"/>
+                        <line x1="25" y1="105" x2="215" y2="105" stroke="#64748b" stroke-width="1.5"/>
+                        <polygon points="120,25 65,105 120,160 175,105" fill="rgba(37,99,235,0.14)" stroke="#2563eb" stroke-width="2.5"/>
+                        <text x="125" y="25" font-size="11" font-weight="bold">A(0,6)</text>
+                        <text x="125" y="172" font-size="11" font-weight="bold">C(0,-4)</text>
+                        <text x="18" y="100" font-size="11" font-weight="bold">B(-3,0)</text>
+                        <text x="178" y="100" font-size="11" font-weight="bold">D(3,0)</text>
+                    </svg>`,
+                inputs: [{ key: "kiteArea", label: "שטח הדלתון =", answer: 30, placeholder: "?" }],
+                solution: `
+                    <div><strong>אלכסון AC:</strong> <span class="math-ltr">6 - (-4) = 10</span>. <strong>אלכסון BD:</strong> <span class="math-ltr">3 - (-3) = 6</span>.</div>
+                    <div><strong>שטח הדלתון:</strong> <span class="math-ltr" style="color:#15803d;">(10 × 6) : 2 = 30</span>.</div>
+                `
+            },
+
+            // TOPIC 9
+            {
+                id: 17, topicId: 9, topicName: "9. חישובי אחוזים", levelLabel: "תרגיל 1 מתוך 2 (תקציב מסיבה)",
+                prompt: `התקציב למסיבת כיתה הוא <span class="math-ltr">800 ₪</span>. הוציאו <span class="math-ltr">200 ₪</span> על שתייה, ואת שאר הכסף השאירו לכיבוד.<br>
+                         כמה <strong>אחוזים (%)</strong> מהתקציב הכולל נשארו לכיבוד?`,
+                inputs: [{ key: "pct", label: "אחוז לכיבוד (%) =", answer: 75, placeholder: "?" }],
+                solution: `
+                    <div>נשארו לכיבוד <span class="math-ltr">800 - 200 = 600 ₪</span>. באחוזים: <span class="math-ltr" style="color:#15803d;">(600 : 800) × 100 = 75%</span>.</div>
+                `
+            },
+            {
+                id: 18, topicId: 9, topicName: "9. חישובי אחוזים", levelLabel: "תרגיל 2 מתוך 2 (אחוזים בשתי כיתות)",
+                prompt: `בכיתה ט'1 לומדים <span class="math-ltr">25</span> תלמידים, ו-<span class="math-ltr">20%</span> מהם מנגנים בכלי נגינה.<br>
+                         בכיתה ט'2 לומדים <span class="math-ltr">30</span> תלמידים, ו-<span class="math-ltr">30%</span> מהם מנגנים בכלי נגינה.<br>
+                         כמה תלמידים מנגנים <strong>בסך הכל</strong> בשתי הכיתות יחד?`,
+                inputs: [{ key: "totalMusicians", label: "סה\"כ מנגנים =", answer: 14, placeholder: "?" }],
+                solution: `
+                    <div>בט'1: <span class="math-ltr">25 × 0.20 = 5</span> תלמידים. בט'2: <span class="math-ltr">30 × 0.30 = 9</span> תלמידים.</div>
+                    <div>בסך הכל: <span class="math-ltr" style="color:#15803d;">5 + 9 = 14</span> תלמידים.</div>
+                `
+            },
+
+            // TOPIC 10
+            {
+                id: 19, topicId: 10, topicName: "10. שאלות מילוליות: מחירים ותנועה", levelLabel: "תרגיל 1 מתוך 2 (השוואת מחירים)",
+                prompt: `חברה א' גובה דמי פתיחה קבועים של <span class="math-ltr">20 ₪</span> ועוד <span class="math-ltr">5 ₪</span> לכל שעת רכיבה.<br>
+                         חברה ב' אינה גובה דמי פתיחה, וגובה <span class="math-ltr">10 ₪</span> לכל שעת רכיבה.<br>
+                         לאחר כמה <strong>שעות רכיבה</strong> התשלום בשתי החברות יהיה <strong>שווה</strong>?`,
+                inputs: [{ key: "hours", label: "מספר שעות =", answer: 4, placeholder: "?" }],
+                solution: `
+                    <div>נשווה בין שתי התוכניות: <span class="math-ltr" style="color:#15803d;">20 + 5x = 10x ⟹ 20 = 5x ⟹ x = 4 שעות</span>.</div>
+                `
+            },
+            {
+                id: 20, topicId: 10, topicName: "10. שאלות מילוליות: מחירים ותנועה", levelLabel: "תרגיל 2 מתוך 2 (תנועה וזמן בדקות)",
+                prompt: `עדי רכבה באופניים מרחק של <span class="math-ltr">6 ק"מ</span> במהירות קבועה של <span class="math-ltr">15 קמ"ש</span>.<br>
+                         כמה <strong>דקות</strong> נמשכה הרכיבה של עדי?`,
+                inputs: [{ key: "mins", label: "זמן בדקות =", answer: 24, placeholder: "?" }],
+                solution: `
+                    <div><strong>זמן בשעות:</strong> <span class="math-ltr">6 : 15 = 0.4 שעות</span>.</div>
+                    <div><strong>בדקות:</strong> <span class="math-ltr" style="color:#15803d;">0.4 × 60 = 24 דקות</span>.</div>
+                `
+            },
+
+            // TOPIC 11
+            {
+                id: 21, topicId: 11, topicName: "11. קריאת גרפים מתארים מציאות", levelLabel: "תרגיל 1 מתוך 2 (גרף דרגנוע)",
+                prompt: `הגרף מתאר את גובהו של אדם העולה בדרגנוע (במטרים) כפונקציה של הזמן (בשניות).<br>
+                         מהו <strong>הגובה ההתחלתי</strong> (בזמן <span class="math-ltr">0</span>), ובכמה מטרים עולה הדרגנוע <strong>בכל שנייה</strong>?`,
+                visual: `
+                    <svg viewBox="0 0 270 185">
+                        <g stroke="#e2e8f0" stroke-width="1">
+                            <line x1="50" y1="25" x2="245" y2="25"/><line x1="50" y1="55" x2="245" y2="55"/><line x1="50" y1="85" x2="245" y2="85"/><line x1="50" y1="115" x2="245" y2="115"/><line x1="50" y1="145" x2="245" y2="145"/>
+                            <line x1="90" y1="20" x2="90" y2="145"/><line x1="130" y1="20" x2="130" y2="145"/><line x1="170" y1="20" x2="170" y2="145"/><line x1="210" y1="20" x2="210" y2="145"/>
+                        </g>
+                        <line x1="50" y1="145" x2="245" y2="145" stroke="#334155" stroke-width="2"/>
+                        <line x1="50" y1="145" x2="50" y2="18" stroke="#334155" stroke-width="2"/>
+                        <text x="35" y="149" font-size="11" font-weight="bold">0</text>
+                        <text x="35" y="119" font-size="11" font-weight="bold">2</text>
+                        <text x="35" y="89" font-size="11" font-weight="bold">4</text>
+                        <text x="35" y="59" font-size="11" font-weight="bold">6</text>
+                        <text x="35" y="29" font-size="11" font-weight="bold">8</text>
+                        <text x="87" y="160" font-size="11" font-weight="bold">2</text>
+                        <text x="127" y="160" font-size="11" font-weight="bold">4</text>
+                        <text x="167" y="160" font-size="11" font-weight="bold">6</text>
+                        <text x="207" y="160" font-size="11" font-weight="bold">8</text>
+                        <text x="125" y="177" font-size="11" font-weight="bold" fill="#475569">זמן (שניות)</text>
+                        <line x1="50" y1="115" x2="170" y2="25" stroke="#2563eb" stroke-width="3"/>
+                        <circle cx="50" cy="115" r="4" fill="#dc2626"/>
+                        <circle cx="170" cy="25" r="4" fill="#dc2626"/>
+                    </svg>`,
+                inputs: [
+                    { key: "startH", label: "גובה התחלתי (מ') =", answer: 2, placeholder: "?" },
+                    { key: "rate", label: "עלייה לשנייה (מ') =", answer: 1, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>גובה התחלתי:</strong> בזמן <span class="math-ltr">0</span> הגובה הוא <span class="math-ltr" style="color:#15803d;">2 מ'</span>.</div>
+                    <div><strong>קצב העלייה:</strong> ב-<span class="math-ltr">6</span> שניות הגובה עלה מ-<span class="math-ltr">2</span> ל-<span class="math-ltr">8</span> (עלייה של <span class="math-ltr">6 מ'</span>), ולכן <span class="math-ltr" style="color:#15803d;">6 : 6 = 1 מ' לשנייה</span>.</div>
+                `
+            },
+            {
+                id: 22, topicId: 11, topicName: "11. קריאת גרפים מתארים מציאות", levelLabel: "תרגיל 2 מתוך 2 (גרף הליכה ועצירה)",
+                prompt: `הדר הלכה מביתה לקיוסק, עצרה שם לקנות ארטיק, ואז המשיכה לבית סבתא.<br>
+                         לפי הגרף: כמה <strong>דקות</strong> הדר עצרה בקיוסק, ומה המרחק הכולל מביתה עד בית סבתא (במטרים)?`,
+                visual: `
+                    <svg viewBox="0 0 280 185">
+                        <g stroke="#e2e8f0" stroke-width="1">
+                            <line x1="55" y1="30" x2="255" y2="30"/><line x1="55" y1="68" x2="255" y2="68"/><line x1="55" y1="106" x2="255" y2="106"/><line x1="55" y1="145" x2="255" y2="145"/>
+                            <line x1="95" y1="20" x2="95" y2="145"/><line x1="135" y1="20" x2="135" y2="145"/><line x1="175" y1="20" x2="175" y2="145"/><line x1="215" y1="20" x2="215" y2="145"/>
+                        </g>
+                        <line x1="55" y1="145" x2="255" y2="145" stroke="#334155" stroke-width="2"/>
+                        <line x1="55" y1="145" x2="55" y2="18" stroke="#334155" stroke-width="2"/>
+                        <text x="22" y="149" font-size="10" font-weight="bold">0</text>
+                        <text x="22" y="110" font-size="10" font-weight="bold">200</text>
+                        <text x="22" y="72" font-size="10" font-weight="bold">400</text>
+                        <text x="22" y="34" font-size="10" font-weight="bold">600</text>
+                        <text x="91" y="160" font-size="10" font-weight="bold">5</text>
+                        <text x="129" y="160" font-size="10" font-weight="bold">10</text>
+                        <text x="169" y="160" font-size="10" font-weight="bold">15</text>
+                        <text x="209" y="160" font-size="10" font-weight="bold">20</text>
+                        <text x="125" y="177" font-size="11" font-weight="bold" fill="#475569">זמן (דקות)</text>
+                        <polyline points="55,145 95,68 175,68 215,30" fill="none" stroke="#dc2626" stroke-width="3"/>
+                        <circle cx="95" cy="68" r="4" fill="#1e293b"/>
+                        <circle cx="175" cy="68" r="4" fill="#1e293b"/>
+                        <circle cx="215" cy="30" r="4" fill="#1e293b"/>
+                    </svg>`,
+                inputs: [
+                    { key: "stopTime", label: "זמן עצירה (דקות) =", answer: 10, placeholder: "?" },
+                    { key: "totalDist", label: "מרחק כולל (מ') =", answer: 600, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>זמן העצירה:</strong> הקטע האופקי הוא מדקה <span class="math-ltr">5</span> עד דקה <span class="math-ltr">15</span>, כלומר <span class="math-ltr" style="color:#15803d;">15 - 5 = 10 דקות</span>.</div>
+                    <div><strong>מרחק כולל:</strong> בסוף הגרף המרחק הוא <span class="math-ltr" style="color:#15803d;">600 מטרים</span>.</div>
+                `
+            },
+
+            // TOPIC 12
+            {
+                id: 23, topicId: 12, topicName: "12. סטטיסטיקה, ממוצע ודיאגרמות", levelLabel: "תרגיל 1 מתוך 2 (טבלת שכיחויות)",
+                prompt: `סועדים במסעדה דירגו את השירות מ-1 עד 3 כוכבים:
+                         <table class="data-table">
+                            <tr>
+                                <th>דירוג (כוכבים)</th>
+                                <td class="math-ltr">1</td>
+                                <td class="math-ltr">2</td>
+                                <td class="math-ltr">3</td>
+                            </tr>
+                            <tr>
+                                <th>מספר סועדים</th>
+                                <td class="math-ltr">2</td>
+                                <td class="math-ltr">3</td>
+                                <td class="math-ltr">5</td>
+                            </tr>
+                         </table>
+                         חשבו את <strong>סך כל הסועדים</strong> ואת <strong>הדירוג הממוצע</strong>:`,
+                inputs: [
+                    { key: "voters", label: "סה\"כ סועדים =", answer: 10, placeholder: "?" },
+                    { key: "avg", label: "ממוצע =", answer: 2.3, placeholder: "?" }
+                ],
+                solution: `
+                    <div><strong>סך כל הסועדים:</strong> <span class="math-ltr">2 + 3 + 5 = 10</span> סועדים.</div>
+                    <div><strong>ממוצע:</strong> <span class="math-ltr" style="color:#15803d;">(1·2 + 2·3 + 3·5) : 10 = 23 : 10 = 2.3</span>.</div>
+                `
+            },
+            {
+                id: 24, topicId: 12, topicName: "12. סטטיסטיקה, ממוצע ודיאגרמות", levelLabel: "תרגיל 2 מתוך 2 (דיאגרמת עמודות ואחוזים)",
+                prompt: `בבחירות לראשות העיר הצביעו בסך הכל <span class="math-ltr">500</span> תושבים. המועמד יוסי קיבל <span class="math-ltr">220</span> קולות.<br>
+                         כמה <strong>אחוזים (%)</strong> מהקולות קיבל יוסי?`,
+                visual: `
+                    <svg viewBox="0 0 260 150">
+                        <line x1="35" y1="125" x2="235" y2="125" stroke="#334155" stroke-width="2"/>
+                        <rect x="55" y="35" width="38" height="90" fill="#2563eb" rx="4"/>
+                        <text x="62" y="29" font-size="11" font-weight="bold" fill="#1e3a8a">220</text>
+                        <text x="61" y="140" font-size="11" font-weight="bold">יוסי</text>
+                        <rect x="115" y="52" width="38" height="73" fill="#94a3b8" rx="4"/>
+                        <text x="122" y="46" font-size="11" font-weight="bold" fill="#475569">180</text>
+                        <text x="123" y="140" font-size="11" font-weight="bold">דנה</text>
+                        <rect x="175" y="84" width="38" height="41" fill="#94a3b8" rx="4"/>
+                        <text x="183" y="78" font-size="11" font-weight="bold" fill="#475569">100</text>
+                        <text x="186" y="140" font-size="11" font-weight="bold">רון</text>
+                    </svg>`,
+                inputs: [{ key: "yossiPct", label: "אחוז הקולות של יוסי (%) =", answer: 44, placeholder: "?" }],
+                solution: `
+                    <div>סך כל הקולות: <span class="math-ltr">220 + 180 + 100 = 500</span>.</div>
+                    <div>אחוז הקולות של יוסי: <span class="math-ltr" style="color:#15803d;">(220 : 500) × 100 = 44%</span>.</div>
+                `
+            }
+        ];
+
+        // =====================================================================
+        // APP STATE & INTERACTION LOGIC
+        // =====================================================================
+        let currentIdx = 0;
+        let solvedSet = new Set();
+
+        function populateTopicDropdown() {
+            const select = document.getElementById('topic-select');
+            if (!select) return;
+            select.innerHTML = QUESTIONS.map((q, idx) =>
+                `<option value="${idx}">שאלה ${idx + 1}: ${q.topicName} (${idx % 2 === 0 ? 'א' : 'ב'})</option>`
+            ).join('');
+        }
+
+        function renderCurrentQuestion() {
+            const q = QUESTIONS[currentIdx];
+            if (!q) return;
+
+            document.getElementById('topic-select').value = currentIdx;
+            document.getElementById('q-progress-text').textContent = `שאלה ${currentIdx + 1} / ${QUESTIONS.length}`;
+            document.getElementById('q-diff-badge').textContent = currentIdx % 2 === 0 ? 'רמה בסיסית' : 'רמה מתקדמת';
+            document.getElementById('topic-pill').textContent = `נושא ${q.topicName}`;
+            document.getElementById('sub-level-pill').textContent = q.levelLabel;
+
+            document.getElementById('question-body').innerHTML = q.prompt;
+            const visualEl = document.getElementById('question-visual');
+            if (q.visual) {
+                visualEl.innerHTML = q.visual;
+                visualEl.classList.remove('hidden');
+            } else {
+                visualEl.innerHTML = '';
+                visualEl.classList.add('hidden');
+            }
+
+            // Render Final Inputs + Clean '-' Button Underneath Each Box
+            const inputsContainer = document.getElementById('final-inputs-container');
+            inputsContainer.innerHTML = q.inputs.map((inp, i) => `
+                <div class="input-group">
+                    <label for="ans-field-${i}" class="input-label">${inp.label}</label>
+                    <div class="input-box-stack">
+                        <input type="text" inputmode="decimal" id="ans-field-${i}" placeholder="${inp.placeholder}" autocomplete="off"
+                            class="final-input" onkeydown="handleInputEnter(event, ${i})">
+                        <button type="button" class="btn-minus-under" onclick="toggleMinus(${i})" title="הוסף / הסר מינוס">-</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Reset Feedback & Solution
+            const banner = document.getElementById('feedback-banner');
+            banner.className = 'feedback-banner hidden';
+            banner.innerHTML = '';
+
+            document.getElementById('worked-solution-box').classList.add('hidden');
+            document.getElementById('worked-solution-body').innerHTML = q.solution;
+
+            const nextWrap = document.getElementById('next-question-wrap');
+            if (solvedSet.has(q.id)) {
+                nextWrap.classList.remove('hidden');
+            } else {
+                nextWrap.classList.add('hidden');
+            }
+
+            document.getElementById('next-btn-label').textContent =
+                currentIdx < QUESTIONS.length - 1 ? 'לשאלה הבאה ←' : 'סיימת הכל! חזרה להתחלה ↺';
+
+            document.getElementById('prev-btn').disabled = currentIdx === 0;
+        }
+
+        function handleInputEnter(e, index) {
+            if (e.key !== 'Enter') return;
+            const q = QUESTIONS[currentIdx];
+            if (index < q.inputs.length - 1) {
+                document.getElementById(`ans-field-${index + 1}`).focus();
+            } else {
+                checkCurrentAnswer();
+            }
+        }
+
+        // Normalize all Unicode minus/dash characters to standard ASCII '-'
+        function normalizeDash(str) {
+            return String(str).replace(/[\u2212\u2013\u2014\u2010\u2011\uFE63\uFF0D]/g, '-');
+        }
+
+        // Toggle leading '-' on the answer input box
+        function toggleMinus(index) {
+            const el = document.getElementById(`ans-field-${index}`);
+            if (!el) return;
+
+            let val = normalizeDash(el.value).trim();
+            el.classList.remove('correct', 'wrong');
+
+            if (val === '') {
+                el.value = '-';
+            } else if (val === '-') {
+                el.value = '';
+            } else if (val.startsWith('-')) {
+                el.value = val.slice(1).trim();
+            } else {
+                val = val.replace(/^\+/, '').trim();
+                el.value = '-' + val;
+            }
+
+            el.focus();
+            try {
+                const len = el.value.length;
+                el.setSelectionRange(len, len);
+            } catch (err) {
+                // Safe fallback
+            }
+        }
+
+        // Parse user input robustly (supports negatives, decimals, commas, and fractions like -1/2)
+        function parseMathAnswer(rawStr) {
+            let clean = normalizeDash(rawStr)
+                .replace(/\s+/g, '')
+                .replace(/,/g, '.')
+                .replace(/^[a-zA-Zא-ת]+=/, '');
+
+            if (clean === '' || clean === '-' || clean === '+' || clean === '.') {
+                return NaN;
+            }
+
+            if (/^[+-]?\d+(\.\d+)?\/[+-]?\d+(\.\d+)?$/.test(clean)) {
+                const parts = clean.split('/');
+                const num = Number(parts[0]);
+                const den = Number(parts[1]);
+                if (den === 0) return NaN;
+                return num / den;
+            }
+
+            return Number(clean);
+        }
+
+        function checkCurrentAnswer() {
+            const q = QUESTIONS[currentIdx];
+            const banner = document.getElementById('feedback-banner');
+            let allFilled = true;
+            let hasInvalidFormat = false;
+            let allCorrect = true;
+
+            q.inputs.forEach((inp, i) => {
+                const el = document.getElementById(`ans-field-${i}`);
+                const raw = normalizeDash(el.value).trim();
+
+                if (raw === '' || raw === '-') {
+                    allFilled = false;
+                    return;
+                }
+
+                const val = parseMathAnswer(raw);
+                if (Number.isNaN(val)) {
+                    hasInvalidFormat = true;
+                    el.classList.remove('correct', 'wrong');
+                    void el.offsetWidth;
+                    el.classList.add('wrong');
+                    return;
+                }
+
+                const isOk = Math.abs(val - inp.answer) < 0.05;
+                el.classList.remove('correct', 'wrong');
+                if (isOk) {
+                    el.classList.add('correct');
+                } else {
+                    void el.offsetWidth;
+                    el.classList.add('wrong');
+                    allCorrect = false;
+                }
+            });
+
+            if (!allFilled) {
+                banner.className = 'feedback-banner warning';
+                banner.textContent = 'נא למלא מספר מלא בכל משבצות התשובה לפני הבדיקה 🙂';
+                return;
+            }
+
+            if (hasInvalidFormat) {
+                banner.className = 'feedback-banner warning';
+                banner.textContent = 'נא להזין מספר תקין (לדוגמה: -18 או 2.3) 🙂';
+                return;
+            }
+
+            if (allCorrect) {
+                solvedSet.add(q.id);
+                document.getElementById('score-text').textContent = solvedSet.size;
+                banner.className = 'feedback-banner success';
+                banner.innerHTML = '🎉 כל הכבוד! תשובה מדויקת!';
+                document.getElementById('next-question-wrap').classList.remove('hidden');
+                launchConfetti();
+            } else {
+                banner.className = 'feedback-banner error';
+                banner.innerHTML = '❌ לא מדויק — בדוק שוב את החישוב בטיוטה (וודא שלא שכחת מינוס!), או לחץ למעלה על <strong>"הסבר איך לפתור (דוגמה)"</strong>.';
+            }
+        }
+
+        function toggleFullSolution() {
+            document.getElementById('worked-solution-box').classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            clearScratchpad();
+            currentIdx = currentIdx < QUESTIONS.length - 1 ? currentIdx + 1 : 0;
+            renderCurrentQuestion();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                clearScratchpad();
+                currentIdx--;
+                renderCurrentQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            clearScratchpad();
+            currentIdx = idx;
+            renderCurrentQuestion();
+        }
+
+        // Modal Guide Controls
+        function openGuideModal() {
+            const q = QUESTIONS[currentIdx];
+            const guide = TOPICS_GUIDE[q.topicId];
+            document.getElementById('guide-modal-title').textContent = guide.title;
+            document.getElementById('guide-modal-content').innerHTML = guide.html;
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+        }
+
+        // Scratchpad Logic
+        let canvas, ctx, isDrawing = false;
+        let brushColor = '#0f172a', brushSize = 2.5;
+
+        function switchPadMode(mode) {
+            const typeBtn = document.getElementById('btn-mode-type');
+            const drawBtn = document.getElementById('btn-mode-draw');
+            const typeBox = document.getElementById('pad-type-box');
+            const drawBox = document.getElementById('pad-draw-box');
+
+            if (mode === 'type') {
+                typeBtn.classList.add('active');
+                drawBtn.classList.remove('active');
+                typeBox.classList.remove('hidden');
+                drawBox.classList.add('hidden');
+            } else {
+                drawBtn.classList.add('active');
+                typeBtn.classList.remove('active');
+                typeBox.classList.add('hidden');
+                drawBox.classList.remove('hidden');
+                setupCanvasSize();
+            }
+        }
+
+        function insertSymbol(sym) {
+            const ta = document.getElementById('scratchpad-textarea');
+            const s = ta.selectionStart, e = ta.selectionEnd;
+            ta.value = ta.value.slice(0, s) + sym + ta.value.slice(e);
+            ta.focus();
+            ta.selectionStart = ta.selectionEnd = s + sym.length;
+        }
+
+        function setBrush(color, size) {
+            brushColor = color;
+            brushSize = size;
+        }
+
+        function clearScratchpad() {
+            const ta = document.getElementById('scratchpad-textarea');
+            if (ta) ta.value = '';
+            if (ctx && canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawRuledLines();
+            }
+        }
+
+        function initHandwritingCanvas() {
+            canvas = document.getElementById('handwriting-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+
+            const coords = (e) => {
+                const r = canvas.getBoundingClientRect();
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: cx - r.left, y: cy - r.top };
+            };
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; const p = coords(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDrawing) return;
+                const p = coords(e);
+                ctx.strokeStyle = brushColor; ctx.lineWidth = brushSize; ctx.lineCap = 'round';
+                ctx.lineTo(p.x, p.y); ctx.stroke();
+            });
+            window.addEventListener('mouseup', () => { isDrawing = false; });
+
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; const p = coords(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+            canvas.addEventListener('touchmove', (e) => {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const p = coords(e);
+                ctx.strokeStyle = brushColor; ctx.lineWidth = brushSize; ctx.lineCap = 'round';
+                ctx.lineTo(p.x, p.y); ctx.stroke();
+            }, { passive: false });
+            canvas.addEventListener('touchend', () => { isDrawing = false; });
+        }
+
+        function setupCanvasSize() {
+            if (!canvas) return;
+            const r = canvas.getBoundingClientRect();
+            if (r.width > 0 && canvas.width !== r.width) {
+                canvas.width = r.width;
+                canvas.height = r.height;
+                drawRuledLines();
+            }
+        }
+
+        function drawRuledLines() {
+            if (!ctx || !canvas) return;
+            ctx.save();
+            ctx.strokeStyle = '#dbeafe';
+            ctx.lineWidth = 1;
+            for (let y = 32; y < canvas.height; y += 32) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function launchConfetti() {
+            const c = document.getElementById('confetti-canvas');
+            if (!c) return;
+            const g = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const cols = ['#2563eb', '#16a34a', '#f59e0b', '#ec4899', '#8b5cf6'];
+            const bits = Array.from({ length: 65 }, () => ({
+                x: Math.random() * c.width, y: -20 - Math.random() * 60,
+                w: 8, h: 6, col: cols[Math.floor(Math.random() * cols.length)],
+                vx: (Math.random() - 0.5) * 4, vy: 3 + Math.random() * 4,
+                rot: Math.random() * 360, vr: (Math.random() - 0.5) * 10
+            }));
+            let f = 0;
+            function step() {
+                g.clearRect(0, 0, c.width, c.height);
+                bits.forEach(b => {
+                    b.x += b.vx; b.y += b.vy; b.rot += b.vr;
+                    g.save(); g.translate(b.x, b.y); g.rotate(b.rot * Math.PI / 180);
+                    g.fillStyle = b.col; g.fillRect(-4, -3, b.w, b.h); g.restore();
+                });
+                if (++f < 90) requestAnimationFrame(step);
+                else g.clearRect(0, 0, c.width, c.height);
+            }
+            step();
+        }
+
+        // Reliable initialization on both DOMContentLoaded and immediate load
+        let appInitialized = false;
+        function initApp() {
+            if (appInitialized) return;
+            appInitialized = true;
+            populateTopicDropdown();
+            initHandwritingCanvas();
+            renderCurrentQuestion();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
